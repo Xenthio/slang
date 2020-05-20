@@ -3,6 +3,9 @@
 #include <sstream>
 #include <string>
 
+// slang is a programming language for the 21st century.
+// https://github.com/Xenthio/slang
+
 std::string prev = "unset";
 std::string prev2 = "unset";
 std::string operation = "unset";
@@ -49,6 +52,7 @@ int main ()
 {
 	column = 0;
 	line = 0;
+	// you shouldn't have a hard-coded file, perhaps make this an argument
   std::ifstream file("input.spp");
   std::string str;
   while (std::getline(file, str)) {
