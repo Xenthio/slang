@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	// freshly copied and pasted from stack overflow (:
 	if (argc <= 1)
 	{
-		std::cout << "Usage: " << argv[0] << " spp file" << '\n';
+		std::cout << "Usage: " << argv[0] << " <spp file>" << '\n';
 		std::exit(1);
 	}
 
