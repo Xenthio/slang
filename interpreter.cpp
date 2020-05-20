@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
 std::string prev = "unset";
 std::string prev2 = "unset";
 std::string operation = "unset";
@@ -10,21 +9,17 @@ int output = 0;
 int tick = 0;
 int column = 0;
 int line = 0;
-
-bool is_number(const std::string& s)
-{
+bool is_number(const std::string& s) {
     std::string::const_iterator it = s.begin();
     while (it != s.end() && std::isdigit(*it)) ++it;
     return !s.empty() && it == s.end();
 }
-
 void error(int type, int line, int column) {
 	if (type == 1) {
 		std::cout << "Error: Line " + std::to_string(line) + "char " + std::to_string(column) + "," << std::endl;
 		std::cout << "Expected Operation" << std::endl;
 	}
 }
-
 void process(std::string token) {
 	tick += 1;
 	if (tick == 1) {
@@ -42,9 +37,7 @@ void process(std::string token) {
 	}
 	prev = token;
 }
-
-int main ()
-{
+int main () {
 	column = 0;
 	line = 0;
   std::ifstream file("input.spp");
@@ -63,33 +56,9 @@ int main ()
 		while ((pos = s.find(delimiter)) != std::string::npos) {
 				token = s.substr(0, pos);
 				process(token);
-
-
-				//std::cout << first + operation + second << std::endl;
-				//std::cout << token << std::endl;
 				s.erase(0, pos + delimiter.length());
 		}
 		process(s);
 		std::cout << std::endl << output << std::endl;
-		// if (second == "unset") {
-		// 	second = s;
-		// } else {
-		// 	last = s;
-		// }
-		// if (operation == "+") {
-		// 	int a;
-		// 	int b;
-		// 	std::istringstream(first) >> a;
-		// 	std::istringstream(second) >> a;
-		// 	std::cout << std::to_string(a) + "+" + std::to_string(b) + "=" <<std::endl;
-		// 	std::cout << std::to_string(a + b) << std::endl;
-		//
-		// } else {
-		// 	std::cout << "Error: Line " + std::to_string(line) + "char 2," << std::endl;
-		// 	std::cout << "Expected Operation" << std::endl;
-		// }
-
-		//std::cout << first + operation + second << std::endl;
   }
-
 }
