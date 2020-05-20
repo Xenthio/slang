@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+
 std::string prev = "unset";
 std::string prev2 = "unset";
 std::string operation = "unset";
@@ -9,18 +10,24 @@ int output = 0;
 int tick = 0;
 int column = 0;
 int line = 0;
-bool is_number(const std::string& s) {
+
+bool is_number(const std::string& s)
+{
     std::string::const_iterator it = s.begin();
     while (it != s.end() && std::isdigit(*it)) ++it;
     return !s.empty() && it == s.end();
 }
-void error(int type, int line, int column) {
+
+void error(int type, int line, int column)
+{
 	if (type == 1) {
 		std::cout << "Error: Line " + std::to_string(line) + "char " + std::to_string(column) + "," << std::endl;
 		std::cout << "Expected Operation" << std::endl;
 	}
 }
-void process(std::string token) {
+
+void process(std::string token)
+{
 	tick += 1;
 	if (tick == 1) {
 		int i;
@@ -37,7 +44,9 @@ void process(std::string token) {
 	}
 	prev = token;
 }
-int main () {
+
+int main ()
+{
 	column = 0;
 	line = 0;
   std::ifstream file("input.spp");
