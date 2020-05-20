@@ -18,14 +18,16 @@ bool is_number(const std::string& s)
     return !s.empty() && it == s.end();
 }
 
-void error(int type, int line, int column) {
+void error(int type, int line, int column)
+{
 	if (type == 1) {
 		std::cout << "Error: Line " + std::to_string(line) + "char " + std::to_string(column) + "," << std::endl;
 		std::cout << "Expected Operation" << std::endl;
 	}
 }
 
-void process(std::string token) {
+void process(std::string token)
+{
 	tick += 1;
 	if (tick == 1) {
 		int i;
@@ -63,33 +65,9 @@ int main ()
 		while ((pos = s.find(delimiter)) != std::string::npos) {
 				token = s.substr(0, pos);
 				process(token);
-
-
-				//std::cout << first + operation + second << std::endl;
-				//std::cout << token << std::endl;
 				s.erase(0, pos + delimiter.length());
 		}
 		process(s);
 		std::cout << std::endl << output << std::endl;
-		// if (second == "unset") {
-		// 	second = s;
-		// } else {
-		// 	last = s;
-		// }
-		// if (operation == "+") {
-		// 	int a;
-		// 	int b;
-		// 	std::istringstream(first) >> a;
-		// 	std::istringstream(second) >> a;
-		// 	std::cout << std::to_string(a) + "+" + std::to_string(b) + "=" <<std::endl;
-		// 	std::cout << std::to_string(a + b) << std::endl;
-		//
-		// } else {
-		// 	std::cout << "Error: Line " + std::to_string(line) + "char 2," << std::endl;
-		// 	std::cout << "Expected Operation" << std::endl;
-		// }
-
-		//std::cout << first + operation + second << std::endl;
   }
-
 }
