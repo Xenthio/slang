@@ -21,7 +21,7 @@ int output = 0; // the sum of the
 int tick = 0; // basically column
 int column = 0; // used for error handing
 int line = 0;
-
+std::string redColour = "\x1B[31m";
 
 bool is_number(const std::string& s) // A function to see if a string is a number.
 {
@@ -35,7 +35,7 @@ void error(int type) // Error handling, takes in a code and outputs respective i
 	for (int i=0; i<tick; ++i) {
     std::cout << "\b";
 	}
-	std::cout << "Error: Line " + std::to_string(line) + ", Character " + std::to_string(column) + "." << std::endl;
+	std::cout << redColour + "Error: Line " + std::to_string(line) + ", Character " + std::to_string(column) + "." << std::endl;
 	if (type == 1) {
 		std::cout << std::to_string(type) + ": " + "Expected Operation." << std::endl;
 	} else if (type == 2) {
