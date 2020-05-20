@@ -7,6 +7,7 @@
 // https://github.com/Xenthio/slang
 
 std::map<std::string, std::string> Variables{{ "test1", "5"}, { "test2", "10" }};
+std::map<std::string, std::string> Functions{{ "testfunc", "i = 2;return i"}, { "testfunc2", "return 10" }};
 
 std::string str = "unset";
 std::string prev = "unset";
@@ -16,6 +17,8 @@ std::string previousOp = "unset";
 int mode = 1; // 0: Uninitialised.
 							// 1: Math
 							// 2: Variable Set
+							// 3: Function Set
+							// 4: Function Run
 std::string first = "unset";
 int output = 0; // the sum of the
 int tick = 0; // basically column
@@ -58,6 +61,8 @@ void process(std::string token)
 	if (!is_number(token)) {
 		if (Variables.count( token ) == 1) {
 			token = Variables[token];
+		} else if (Functions.count( token ) == 1) {
+			mode = 4;
 		}
 	}
 	if (tick == 1) {
@@ -88,7 +93,7 @@ void process(std::string token)
 		} else if (prev == "=") {
 			// oh boy array time
 			if (tick != 3) {
-				error(5);
+				error(5); // Oops! you used tried to set a variable at the wrong point of time!
 				exit(1);
 			} else {
 			 first = prev2;
@@ -96,8 +101,6 @@ void process(std::string token)
 			 output += i;
 			}
 		}
-
-
 	} else if (is_number(prev) && is_number(token)) {
 		error(1); // expected operation
 		exit(1);
@@ -105,7 +108,12 @@ void process(std::string token)
 
 	}
 	//std::cout << prev;
-
+	if (token == "{") {
+		// oh boy function time
+		first = prev;
+		mode = 3;
+		Variables.insert ({ prev, "" }) ;
+	}
 	prev2 = prev;
 	prev = token;
 }
@@ -124,31 +132,40 @@ int main(int argc, char *argv[])
   std::ifstream file(argv[1]);
   std::string str;
   while (std::getline(file, str)) {
-		line += 1;
-		std::string s = str;
-		std::string delimiter = " ";
-		output = 0;
-		prev = "unset";
-		prev2 = "unset";
-		operation = "unset";
-		previousOp = "unset";
-		tick = 0;
-		column = 0;
-		size_t pos = 0;
-		std::string token;
+		if (mode == 3) {
+			if (Functions.count( first ) == 1) {
+				Functions[first] = Functions[first] + ";" + str;
+			}
+		} else if (mode == 4) {
 
-		while ((pos = s.find(delimiter)) != std::string::npos) {
-			token = s.substr(0, pos);
-			process(token);
-			s.erase(0, pos + delimiter.length());
-		}
-		process(s);
-		if (mode == 1) {
-			std::cout << std::endl << output << std::endl;
-		} else if (mode == 2) {
-			std::cout << std::endl << output << std::endl;
-			Variables.insert ({ first, std::to_string(output) }) ;
-			mode = 1;
+		} else {
+			line += 1;
+			std::string s = str;
+			std::string delimiter = " ";
+			output = 0;
+			prev = "unset";
+			prev2 = "unset";
+			operation = "unset";
+			previousOp = "unset";
+			tick = 0;
+			column = 0;
+			size_t pos = 0;
+			std::string token;
+
+
+			while ((pos = s.find(delimiter)) != std::string::npos) {
+				token = s.substr(0, pos);
+				process(token);
+				s.erase(0, pos + delimiter.length());
+			}
+			process(s);
+			if (mode == 1) {
+				std::cout << std::endl << output << std::endl;
+			} else if (mode == 2) {
+				//std::cout << std::endl << output << std::endl;
+				Variables.insert ({ first, std::to_string(output) }) ;
+				mode = 1;
+			}
 		}
   }
 }
