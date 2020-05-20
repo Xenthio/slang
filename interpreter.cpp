@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
 // slang is a programming language for the 21st century.
 // https://github.com/Xenthio/slang
 
@@ -48,12 +47,18 @@ void process(std::string token)
 	prev = token;
 }
 
-int main ()
+int main(int argc, char *argv[])
 {
+	// freshly copied and pasted from stack overflow (:
+	if (argc <= 1)
+	{
+		std::cout << "Usage: " << argv[0] << " spp file" << '\n';
+		std::exit(1);
+	}
+
 	column = 0;
 	line = 0;
-	// you shouldn't have a hard-coded file, perhaps make this an argument
-  std::ifstream file("input.spp");
+  std::ifstream file(argv[1]);
   std::string str;
   while (std::getline(file, str)) {
 		line += 1;
