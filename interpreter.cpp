@@ -43,6 +43,15 @@ void process(std::string token)
 		int i;
 		std::istringstream(token) >> i;
 		output -= i;
+	} else if (prev == "*") {
+		int i;
+		std::istringstream(token) >> i;
+		output *= i;
+	} else if (prev == "/") {
+		int i;
+		std::istringstream(token) >> i;
+		output /= i;
+
 	} else if (is_number(prev2)){
 		error(1, line, tick);
 	}
