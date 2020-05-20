@@ -54,6 +54,12 @@ void error(int type) // Error handling, takes in a code and outputs respective i
 void process(std::string token)
 {
 	tick += 1;
+	std::cout << token;
+	if (!is_number(token)) {
+		if (Variables.count( token ) == 1) {
+			token = Variables[token];
+		}
+	}
 	if (tick == 1) {
 		int i;
 		std::istringstream(token) >> i;
@@ -62,6 +68,7 @@ void process(std::string token)
 	} else {
 		column += 2;
 	}
+
 	if (prev == "+" || prev == "-" || prev == "/" || prev == "*" || prev == "=") {
 		if (column == (str.length() - 2)) {
 			error(2); // expected value, got end of line
@@ -84,8 +91,9 @@ void process(std::string token)
 				error(5);
 				exit(1);
 			} else {
-			 first = prev;
+			 first = prev2;
 			 mode = 2;
+			 output += i;
 			}
 		}
 
@@ -97,7 +105,7 @@ void process(std::string token)
 
 	}
 	//std::cout << prev;
-	std::cout << token;
+
 	prev2 = prev;
 	prev = token;
 }
@@ -138,7 +146,8 @@ int main(int argc, char *argv[])
 		if (mode == 1) {
 			std::cout << std::endl << output << std::endl;
 		} else if (mode == 2) {
-			std::cout << "you set a variable";
+			std::cout << std::endl << output << std::endl;
+			Variables.insert ({ first, std::to_string(output) }) ;
 			mode = 1;
 		}
   }
