@@ -2,14 +2,21 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-// slang is a programming language for the 21st century.
+#include <bits/stdc++.h>
+// slang is a programming language for the 21st century. nope its a calculator right now.
 // https://github.com/Xenthio/slang
+
+std::map<std::string, std::string> Variables{{ "test1", "5"}, { "test2", "10" }};
 
 std::string str = "unset";
 std::string prev = "unset";
 std::string prev2 = "unset";
 std::string operation = "unset";
 std::string previousOp = "unset";
+int mode = 1; // 0: Uninitialised.
+							// 1: Math
+							// 2: Variable Set
+std::string first = "unset";
 int output = 0; // the sum of the
 int tick = 0; // basically column
 int column = 0; // used for error handing
@@ -37,6 +44,8 @@ void error(int type) // Error handling, takes in a code and outputs respective i
 		std::cout << std::to_string(type) + ": " + "Expected value." << std::endl;
 	} else if (type == 4) {
 		std::cout << std::to_string(type) + ": " + "Got unknown operation." << std::endl;
+	} else if (type == 5) {
+		std::cout << std::to_string(type) + ": " + "Cannot set variable at this time." << std::endl;
 	} else {
 		std::cout << "0: Unknown Error." << std::endl;
 	}
@@ -53,7 +62,7 @@ void process(std::string token)
 	} else {
 		column += 2;
 	}
-	if (prev == "+" || prev == "-" || prev == "/" || prev == "*") {
+	if (prev == "+" || prev == "-" || prev == "/" || prev == "*" || prev == "=") {
 		if (column == (str.length() - 2)) {
 			error(2); // expected value, got end of line
 			exit(1);
@@ -69,6 +78,15 @@ void process(std::string token)
 			output /= i;
 		} else if (prev == "*") {
 			output *= i;
+		} else if (prev == "=") {
+			// oh boy array time
+			if (tick != 3) {
+				error(5);
+				exit(1);
+			} else {
+			 first = prev;
+			 mode = 2;
+			}
 		}
 
 
@@ -117,6 +135,11 @@ int main(int argc, char *argv[])
 			s.erase(0, pos + delimiter.length());
 		}
 		process(s);
-		std::cout << std::endl << output << std::endl;
+		if (mode == 1) {
+			std::cout << std::endl << output << std::endl;
+		} else if (mode == 2) {
+			std::cout << "you set a variable";
+			mode = 1;
+		}
   }
 }
